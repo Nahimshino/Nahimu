@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Nahimu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header" id="siteHeader">
+        <button class="site-header__toggle" id="navToggle" type="button" aria-controls="siteNav" aria-expanded="false">
+            <span class="site-header__toggle-bars" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+    </header>
+
+    <nav class="site-nav" id="siteNav" aria-hidden="true">
+        <div class="site-nav__links" aria-label="Primary navigation">
+            <a class="site-nav__link" href="#hero">HOME</a>
+            <span class="site-nav__slash" aria-hidden="true">/</span>
+            <a class="site-nav__link" href="#gallery">GALLERY</a>
+            <span class="site-nav__slash" aria-hidden="true">/</span>
+            const contactEmail = 'nfhebueno80@gmail.com';
+            <a class="site-nav__link" href="work.html">WORK</a>
+            <span class="site-nav__slash" aria-hidden="true">/</span>
+            <a class="site-nav__link" href="about-contact.html#about">ABOUT ME</a>
+            <span class="site-nav__slash" aria-hidden="true">/</span>
+            <a class="site-nav__link" href="about-contact.html#contact">CONTACT</a>
+        </div>
+    </nav>
+
+    <main class="page">
+        <section class="hero" id="hero" aria-label="Nahimu portfolio cover">
+                const formData = new FormData(contactForm);
+                const name = String(formData.get('name') || '').trim();
+                const country = String(formData.get('country') || '').trim();
+                const email = String(formData.get('email') || '').trim();
+                const phoneCode = String(formData.get('phoneCode') || '').trim();
+                const phoneNumber = String(formData.get('phoneNumber') || '').trim();
+                const message = String(formData.get('message') || '').trim();
+
+                const subject = encodeURIComponent(`Portfolio contact from ${name || 'Website visitor'}`);
+                const bodyText = [
+                    `Name: ${name}`,
+                    `Country: ${country}`,
+                    `Email: ${email}`,
+                    `Phone: ${phoneCode} ${phoneNumber}`.trim(),
+                    '',
+                    message,
+                ].join('\n');
+
+                window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${encodeURIComponent(bodyText)}`;
+            <div class="logo-stack" aria-label="Nahimu logo interaction">
+                <img class="logo logo-layer logo-top-4" src="img/nahimu_RED.svg" alt="Nahimu red top" />
+                <img class="logo logo-layer logo-top-3" src="img/nahimu_YELLOW.svg" alt="Nahimu yellow top" />
+                <img class="logo logo-layer logo-top-2" src="img/nahimu_CIAN.svg" alt="Nahimu cian top" />
+                <img class="logo logo-layer logo-top-1" src="img/nahimu_BLUE.svg" alt="Nahimu blue top" />
+                <button class="logo-trigger" id="logoTrigger" type="button" aria-label="Show portfolio state">
+                    <img class="logo logo-main logo-black" src="img/nahimu_BLACK.svg" alt="Nahimu" />
+                    <img class="logo logo-main logo-white" src="img/nahimu_BLANCO.svg" alt="Nahimu" />
+                </button>
+                <img class="logo logo-layer logo-bottom-1" src="img/nahimu_BLUE.svg" alt="Nahimu blue bottom" />
+                <img class="logo logo-layer logo-bottom-2" src="img/nahimu_CIAN.svg" alt="Nahimu cian bottom" />
+                <img class="logo logo-layer logo-bottom-3" src="img/nahimu_YELLOW.svg" alt="Nahimu yellow bottom" />
+                <img class="logo logo-layer logo-bottom-4" src="img/nahimu_RED.svg" alt="Nahimu red bottom" />
+            </div>
+            <p class="subtitle" id="subtitle">Interactive Media Designer</p>
+        </section>
+
+        <script>
+            const body = document.body;
+            const trigger = document.getElementById('logoTrigger');
+            const logoStack = document.querySelector('.logo-stack');
+            const subtitle = document.getElementById('subtitle');
+            const siteHeader = document.getElementById('siteHeader');
+            const navToggle = document.getElementById('navToggle');
+            const siteNav = document.getElementById('siteNav');
+
+            const idleOpenDelay = 6000;
+            const activeDuration = 3000;
+            const hoverLeaveGrace = 50;
+
+            let hoverCount = 0;
+            let idleOpenTimer = null;
+            let idleCloseTimer = null;
+            let hoverLeaveTimer = null;
+            let manualOpen = false;
+
+            const clearIdleTimers = () => {
+                window.clearTimeout(idleOpenTimer);
+                window.clearTimeout(idleCloseTimer);
+                idleOpenTimer = null;
+                idleCloseTimer = null;
+            };
+
+            const cancelHoverLeave = () => {
+                window.clearTimeout(hoverLeaveTimer);
+                hoverLeaveTimer = null;
+            };
+
+            const openGallery = () => {
+                body.classList.add('gallery-open');
+            };
+
+            const closeGallery = () => {
+                if (!manualOpen) {
+                    body.classList.remove('gallery-open');
+                }
+            };
+
+            const scheduleIdleAnimation = () => {
+                clearIdleTimers();
+
+                if (hoverCount > 0 || manualOpen) {
+                    return;
+                }
+
+                idleOpenTimer = window.setTimeout(() => {
+                    if (hoverCount > 0 || manualOpen) {
+                        return;
+                    }
+
+                    openGallery();
+
+                    idleCloseTimer = window.setTimeout(() => {
+                        if (hoverCount > 0 || manualOpen) {
+                            return;
+                        }
+
+                        closeGallery();
+                        scheduleIdleAnimation();
+                    }, activeDuration);
+                }, idleOpenDelay);
+            };
+
+            const startHover = () => {
+                hoverCount += 1;
+                cancelHoverLeave();
+                clearIdleTimers();
+                openGallery();
+            };
+
+            const endHover = () => {
+                hoverCount = Math.max(0, hoverCount - 1);
+
+                if (hoverCount > 0) {
+                    return;
+                }
+
+                cancelHoverLeave();
+                hoverLeaveTimer = window.setTimeout(() => {
+                    if (hoverCount > 0 || manualOpen) {
+                        return;
+                    }
+
+                    closeGallery();
+                    scheduleIdleAnimation();
+                }, hoverLeaveGrace);
+            };
+
+            logoStack.addEventListener('mouseenter', startHover);
+            logoStack.addEventListener('focusin', startHover);
+            logoStack.addEventListener('mouseleave', endHover);
+            logoStack.addEventListener('focusout', endHover);
+
+            scheduleIdleAnimation();
+
+            trigger.addEventListener('click', () => {
+                if (body.classList.contains('gallery-open')) {
+                    manualOpen = false;
+                    clearIdleTimers();
+                    cancelHoverLeave();
+                    closeGallery();
+                    if (hoverCount === 0) {
+                        scheduleIdleAnimation();
+                    }
+                } else {
+                    manualOpen = true;
+                    clearIdleTimers();
+                    cancelHoverLeave();
+                    openGallery();
+                }
+            });
+
+            const subtitleRoles = ['Interactive Media Designer', 'Graphic Designer', 'UI/UX Designer'];
+            const subtitleSwitchDelay = 2600;
+            const subtitleFadeDuration = 180;
+            let subtitleRoleIndex = 0;
+
+            const switchSubtitleRole = () => {
+                if (!subtitle) {
+                    return;
+                }
+
+                subtitle.classList.add('is-switching');
+
+                window.setTimeout(() => {
+                    subtitleRoleIndex = (subtitleRoleIndex + 1) % subtitleRoles.length;
+                    subtitle.textContent = subtitleRoles[subtitleRoleIndex];
+                    subtitle.classList.remove('is-switching');
+                }, subtitleFadeDuration);
+            };
+
+            if (subtitle) {
+                subtitle.textContent = subtitleRoles[0];
+                window.setInterval(switchSubtitleRole, subtitleSwitchDelay);
+            }
+
+            const openNav = () => {
+                body.classList.add('nav-open');
+                navToggle?.setAttribute('aria-expanded', 'true');
+                siteNav?.setAttribute('aria-hidden', 'false');
+            };
+
+            const closeNav = () => {
+                body.classList.remove('nav-open');
+                navToggle?.setAttribute('aria-expanded', 'false');
+                siteNav?.setAttribute('aria-hidden', 'true');
+            };
+
+            navToggle?.addEventListener('click', () => {
+                if (body.classList.contains('nav-open')) {
+                    closeNav();
+                } else {
+                    openNav();
+                }
+            });
+
+            siteNav?.addEventListener('click', (event) => {
+                if (event.target instanceof HTMLAnchorElement) {
+                    closeNav();
+                }
+            });
+
+        </script>
+
+        <section class="gallery" id="gallery" aria-labelledby="galleryTitle">
+            <div class="gallery__intro">
+                <h2 class="gallery__title" id="galleryTitle">
+                    <span class="gallery__title-line">GALLE</span>
+                    <span class="gallery__title-line gallery__title-line--bottom">RY</span>
+                </h2>
+                <div class="gallery__mark-swap">
+                    <img class="gallery__mark gallery__mark--default" src="img/zoro_logo-11.svg" alt="Zoro logo" />
+                    <img class="gallery__mark gallery__mark--color" src="img/zoro_logo_color-11-11.svg" alt="" />
+                </div>
+            </div>
+
+            <div class="gallery__grid" aria-label="Gallery artwork cards">
+                <article class="gallery-card gallery-card--wide gallery-card--1" tabindex="0" aria-label="LA DIABLADA, 2024">
+                    <div class="gallery-card__inner">
+                        <div class="gallery-card__face gallery-card__face--front" style="--card-image: url('img/Expresiones-25.svg');"></div>
+                        <div class="gallery-card__face gallery-card__face--back" style="--card-back-bg: #ffff00; --card-back-fg: #121212;">
+                            <span class="gallery-card__back-title">LA DIABLADA</span>
+                            <span class="gallery-card__back-year">2024</span>
+                        </div>
+                        <div class="gallery-card__peel" aria-hidden="true"></div>
+                    </div>
+                </article>
+
+                <article class="gallery-card gallery-card--wide gallery-card--2" tabindex="0" aria-label="GAMEFORGE, 2025">
+                    <div class="gallery-card__inner">
+                        <div class="gallery-card__face gallery-card__face--front" style="--card-image: url('img/GameForge\ \(2\)-24.svg');"></div>
+                        <div class="gallery-card__face gallery-card__face--back" style="--card-back-bg: #01fff5; --card-back-fg: #121212;">
+                            <span class="gallery-card__back-title">GAMEFORGE</span>
+                            <span class="gallery-card__back-year">2025</span>
+                        </div>
+                        <div class="gallery-card__peel" aria-hidden="true"></div>
+                    </div>
+                </article>
+
+                <article class="gallery-card gallery-card--square gallery-card--3" tabindex="0" aria-label="ÚNICO, 2025">
+                    <div class="gallery-card__inner">
+                        <div class="gallery-card__face gallery-card__face--front" style="--card-image: url('img/PTipo_Nahim-01.svg');"></div>
+                        <div class="gallery-card__face gallery-card__face--back" style="--card-back-bg: #fa1e5a; --card-back-fg: #ffffff;">
+                            <span class="gallery-card__back-title">ÚNICO</span>
+                            <span class="gallery-card__back-year">2025</span>
+                        </div>
+                        <div class="gallery-card__peel" aria-hidden="true"></div>
+                    </div>
+                </article>
+
+                <article class="gallery-card gallery-card--square gallery-card--4" tabindex="0" aria-label="TRADICIONES Y MURALES, 2024">
+                    <div class="gallery-card__inner">
+                        <div class="gallery-card__face gallery-card__face--front" style="--card-image: url('img/tradi-27.svg');"></div>
+                        <div class="gallery-card__face gallery-card__face--back" style="--card-back-bg: #00a0eb; --card-back-fg: #ffffff;">
+                            <span class="gallery-card__back-title">TRADICIONES Y MURALES</span>
+                            <span class="gallery-card__back-year">2024</span>
+                        </div>
+                        <div class="gallery-card__peel" aria-hidden="true"></div>
+                    </div>
+                </article>
+
+                <article class="gallery-card gallery-card--square gallery-card--5" tabindex="0" aria-label="TOO/SO TRIANGLES, 2024">
+                    <div class="gallery-card__inner">
+                        <div class="gallery-card__face gallery-card__face--front" style="--card-image: url('img/triangles-26.svg');"></div>
+                        <div class="gallery-card__face gallery-card__face--back" style="--card-back-bg: #ffff00; --card-back-fg: #121212;">
+                            <span class="gallery-card__back-title">TOO/SO TRIANGLES</span>
+                            <span class="gallery-card__back-year">2024</span>
+                        </div>
+                        <div class="gallery-card__peel" aria-hidden="true"></div>
+                    </div>
+                </article>
+
+                <article class="gallery-card gallery-card--square gallery-card--6" tabindex="0" aria-label="VIDA INVISIBLES, 2023">
+                    <div class="gallery-card__inner">
+                        <div class="gallery-card__face gallery-card__face--front" style="--card-image: url('img/vi-29.svg');"></div>
+                        <div class="gallery-card__face gallery-card__face--back" style="--card-back-bg: #01fff5; --card-back-fg: #121212;">
+                            <span class="gallery-card__back-title">VIDA INVISIBLES</span>
+                            <span class="gallery-card__back-year">2023</span>
+                        </div>
+                        <div class="gallery-card__peel" aria-hidden="true"></div>
+                    </div>
+                </article>
+
+                <article class="gallery-card gallery-card--square gallery-card--7" tabindex="0" aria-label="INTERACT2HACK, 2026">
+                    <div class="gallery-card__inner">
+                        <div class="gallery-card__face gallery-card__face--front" style="--card-image: url('img/i2h-23.svg');"></div>
+                        <div class="gallery-card__face gallery-card__face--back" style="--card-back-bg: #fa1e5a; --card-back-fg: #ffffff;">
+                            <span class="gallery-card__back-title">INTERACT2HACK</span>
+                            <span class="gallery-card__back-year">2026</span>
+                        </div>
+                        <div class="gallery-card__peel" aria-hidden="true"></div>
+                    </div>
+                </article>
+
+                <article class="gallery-card gallery-card--square gallery-card--8" tabindex="0" aria-label="METRO NOCHE, 2024">
+                    <div class="gallery-card__inner">
+                        <div class="gallery-card__face gallery-card__face--front" style="--card-image: url('img/metro-28.svg');"></div>
+                        <div class="gallery-card__face gallery-card__face--back" style="--card-back-bg: #00a0eb; --card-back-fg: #ffffff;">
+                            <span class="gallery-card__back-title">METRO NOCHE</span>
+                            <span class="gallery-card__back-year">2024</span>
+                        </div>
+                        <div class="gallery-card__peel" aria-hidden="true"></div>
+                    </div>
+                </article>
+
+                <article class="gallery-card gallery-card--square gallery-card--9" tabindex="0" aria-label="ANIME, 2026">
+                    <div class="gallery-card__inner">
+                        <div class="gallery-card__face gallery-card__face--front" style="--card-image: url('img/anime-30.svg');"></div>
+                        <div class="gallery-card__face gallery-card__face--back" style="--card-back-bg: #ffff00; --card-back-fg: #121212;">
+                            <span class="gallery-card__back-title">ANIME</span>
+                            <span class="gallery-card__back-year">2026</span>
+                        </div>
+                        <div class="gallery-card__peel" aria-hidden="true"></div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <script>
+            const galleryCards = Array.from(document.querySelectorAll('.gallery-card'));
+
+            const clamp01 = (value) => Math.max(0, Math.min(1, value));
+
+            const updateReveal = (card, state, event) => {
+                const rect = card.getBoundingClientRect();
+                const pointerX = clamp01((event.clientX - rect.left) / rect.width);
+                const pointerY = clamp01((event.clientY - rect.top) / rect.height);
+                const revealSize = Math.max(8, Math.min(44, 8 + (1 - Math.min(pointerX, 1 - pointerX, pointerY, 1 - pointerY)) * 36));
+
+                state.revealX = `${(pointerX * 100).toFixed(2)}%`;
+                state.revealY = `${(pointerY * 100).toFixed(2)}%`;
+                state.revealSize = `${revealSize.toFixed(2)}%`;
+
+                card.style.setProperty('--reveal-x', state.revealX);
+                card.style.setProperty('--reveal-y', state.revealY);
+                card.style.setProperty('--reveal-size', state.revealSize);
+            };
+
+            const activateCard = (card, state, event) => {
+                window.clearTimeout(state.hideTimer);
+                state.active = true;
+                card.classList.add('is-active');
+
+                if (event) {
+                    updateReveal(card, state, event);
+                }
+
+                if (!state.revealSize || state.revealSize === '0%') {
+                    state.revealSize = '56%';
+                    card.style.setProperty('--reveal-size', state.revealSize);
+                }
+            };
+
+            const deactivateCard = (card, state) => {
+                state.active = false;
+                card.style.setProperty('--reveal-size', '0%');
+
+                state.hideTimer = window.setTimeout(() => {
+                    if (!state.active) {
+                        card.classList.remove('is-active');
+                    }
+                }, 220);
+            };
+
+            galleryCards.forEach((card) => {
+                const state = {
+                    active: false,
+                    hideTimer: null,
+                    revealX: '50%',
+                    revealY: '50%',
+                    revealSize: '0%',
+                };
+
+                card.style.setProperty('--reveal-x', state.revealX);
+                card.style.setProperty('--reveal-y', state.revealY);
+                card.style.setProperty('--reveal-size', state.revealSize);
+
+                const enterHandler = (event) => {
+                    if (event.pointerType === 'touch') {
+                        return;
+                    }
+
+                    activateCard(card, state, event);
+                };
+
+                const moveHandler = (event) => {
+                    if (!card.classList.contains('is-active') || event.pointerType === 'touch') {
+                        return;
+                    }
+
+                    updateReveal(card, state, event);
+                };
+
+                const leaveHandler = () => {
+                    deactivateCard(card, state);
+                };
+
+                card.addEventListener('pointerenter', enterHandler);
+                card.addEventListener('mouseenter', enterHandler);
+                card.addEventListener('pointermove', moveHandler);
+                card.addEventListener('mousemove', moveHandler);
+                card.addEventListener('pointerleave', leaveHandler);
+                card.addEventListener('mouseleave', leaveHandler);
+
+                card.addEventListener('focus', () => {
+                    activateCard(card, state);
+                });
+
+                card.addEventListener('blur', () => {
+                    deactivateCard(card, state);
+                });
+            });
+        </script>
+
+        <section class="contact" id="contact" aria-labelledby="contactTitle">
+            <h2 class="contact__title" id="contactTitle">LET'S TALK!</h2>
+
+            <div class="contact__content">
+                <div class="contact__illustration" aria-hidden="true">
+                    <img class="contact__illustration-image contact__illustration-image--default" src="img/gatogojo_black-12.svg" alt="" />
+                    <img class="contact__illustration-image contact__illustration-image--color" src="img/gatogojo_color-12-12.svg" alt="" />
+                </div>
+
+                <form class="contact__form" action="#" method="post">
+                    <label class="contact__field contact__field--name">
+                        <span class="contact__label">Name</span>
+                        <input type="text" name="name" autocomplete="name" required placeholder="First and Last Name" />
+                    </label>
+
+                    <label class="contact__field contact__field--country">
+                        <span class="contact__label">Country</span>
+                        <select name="country" required>
+                            <option value="" selected disabled>Select your Country</option>
+                        </select>
+                    </label>
+
+                    <label class="contact__field contact__field--email">
+                        <span class="contact__label">Email</span>
+                        <input type="email" name="email" autocomplete="email" required placeholder="name@dominio.com" />
+                    </label>
+
+                    <div class="contact__field contact__field--phone">
+                        <span class="contact__label">Phone</span>
+                        <div class="contact__phone-row">
+                            <label class="contact__phone-select">
+                                <span class="contact__sr-only">Country code</span>
+                                <select name="phoneCode" required>
+                                    <option value="" selected disabled>Code</option>
+                                </select>
+                            </label>
+                            <label class="contact__phone-number">
+                                <span class="contact__sr-only">Phone number</span>
+                                <input type="tel" name="phoneNumber" autocomplete="tel-national" inputmode="numeric" required placeholder="Phone Number" minlength="6" maxlength="15" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <label class="contact__field contact__field--message">
+                        <span class="contact__label">Message</span>
+                        <span class="contact__hint">Tell me about your project!</span>
+                        <textarea name="message" rows="4"></textarea>
+                    </label>
+
+                    <button class="contact__submit" type="submit">Submit</button>
+                </form>
+            </div>
+        </section>
+
+        <footer class="site-footer" aria-label="Footer">
+            <p class="site-footer__copy">© 2026 Nahimu All Rights Reserved</p>
+
+            <div class="site-footer__socials" aria-label="Social links">
+                <a class="social-link social-link--instagram" href="https://www.instagram.com/bueno_nfh/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="4" y="4" width="16" height="16" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="1.8" />
+                        <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8" />
+                        <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" />
+                    </svg>
+                </a>
+
+                <a class="social-link social-link--linkedin" href="https://www.linkedin.com/in/nahim-escudero-824821280/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6.5 8.5H9V18H6.5V8.5ZM7.75 7.2A1.45 1.45 0 1 1 7.75 4.3a1.45 1.45 0 0 1 0 2.9ZM10.8 8.5H13.2V9.8H13.25C13.6 9.1 14.5 8.3 15.95 8.3C18.55 8.3 19 10 19 12.2V18H16.5V12.9C16.5 11.7 16.48 10.2 14.85 10.2C13.2 10.2 12.95 11.5 12.95 12.8V18H10.8V8.5Z" fill="currentColor" />
+                    </svg>
+                </a>
+
+                <a class="social-link social-link--mail" href="#" aria-label="Email">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="4" y="5" width="16" height="14" rx="3" ry="3" fill="none" stroke="currentColor" stroke-width="1.8" />
+                        <path d="M5.5 7.4L12 12.3L18.5 7.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </a>
+
+                <a class="social-link social-link--whatsapp" href="#" aria-label="WhatsApp">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 4.5A7.5 7.5 0 0 0 6.06 16.53L5 20l3.55-1.02A7.5 7.5 0 1 0 12 4.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                        <path d="M9.3 8.7c.2-.4.4-.4.7-.4h.5c.2 0 .4 0 .5.4l.6 1.6c.1.3.1.5-.1.7l-.5.6c-.1.2-.2.4 0 .7.3.6 1.1 1.6 2.2 2.2.4.2.6.2.8 0l.7-.4c.2-.1.4-.1.6 0l1.4.7c.4.2.4.5.2.8-.2.5-.7 1.2-1.6 1.2-1.2 0-3.4-1-5.1-2.7s-2.7-3.9-2.7-5.1c0-.9.7-1.4 1.2-1.6Z" fill="currentColor" />
+                    </svg>
+                </a>
+            </div>
+        </footer>
+
+        <script src="https://unpkg.com/libphonenumber-js@1.11.10/bundle/libphonenumber-max.js"></script>
+
+        <script>
+            const contactForm = document.querySelector('.contact__form');
+            const countrySelect = contactForm?.querySelector('select[name="country"]');
+            const phoneCodeSelect = contactForm?.querySelector('select[name="phoneCode"]');
+            const emailInput = contactForm?.querySelector('input[name="email"]');
+            const phoneNumberInput = contactForm?.querySelector('input[name="phoneNumber"]');
+
+            const flagEmoji = (regionCode) => {
+                if (!regionCode || regionCode.length !== 2) {
+                    return '';
+                }
+
+                return String.fromCodePoint(...regionCode.toUpperCase().split('').map((char) => 127397 + char.charCodeAt(0)));
+            };
+
+            const populateLocationSelects = async () => {
+                if (!countrySelect || !phoneCodeSelect) {
+                    return;
+                }
+
+                const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2,idd');
+                const countries = await response.json();
+
+                const sortedCountries = countries
+                    .filter((country) => country?.name?.common && country?.cca2)
+                    .sort((left, right) => left.name.common.localeCompare(right.name.common, 'en'));
+
+                countrySelect.innerHTML = '<option value="" selected disabled>Select your Country</option>';
+                phoneCodeSelect.innerHTML = '<option value="" selected disabled>Code</option>';
+
+                sortedCountries.forEach((country) => {
+                    const flag = flagEmoji(country.cca2);
+
+                    const countryOption = document.createElement('option');
+                    countryOption.value = country.cca2;
+                    countryOption.textContent = `${flag} ${country.name.common}`;
+                    countrySelect.appendChild(countryOption);
+
+                    const root = country.idd?.root || '';
+                    const suffixes = Array.isArray(country.idd?.suffixes) && country.idd.suffixes.length > 0 ? country.idd.suffixes : [''];
+
+                    if (!root) {
+                        return;
+                    }
+
+                    suffixes.forEach((suffix) => {
+                        const dialCode = `${root}${suffix}`;
+                        const phoneOption = document.createElement('option');
+                        phoneOption.value = dialCode;
+                        phoneOption.dataset.region = country.cca2;
+                        phoneOption.textContent = `${flag} ${country.name.common} (${dialCode})`;
+                        phoneCodeSelect.appendChild(phoneOption);
+                    });
+                });
+            };
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+            const validateEmailDomain = async () => {
+                if (!emailInput) {
+                    return false;
+                }
+
+                const value = emailInput.value.trim();
+                emailInput.setCustomValidity('');
+
+                if (!value) {
+                    emailInput.setCustomValidity('Enter your email address.');
+                    return false;
+                }
+
+                if (!emailPattern.test(value)) {
+                    emailInput.setCustomValidity('Enter a valid email format.');
+                    return false;
+                }
+
+                const domain = value.split('@')[1];
+
+                try {
+                    const response = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=MX`);
+                    const data = await response.json();
+
+                    if (data.Status !== 0 || !Array.isArray(data.Answer) || data.Answer.length === 0) {
+                        emailInput.setCustomValidity('That email domain does not look valid.');
+                        return false;
+                    }
+                } catch {
+                    return true;
+                }
+
+                return true;
+            };
+
+            const validatePhoneNumber = () => {
+                if (!phoneNumberInput) {
+                    return false;
+                }
+
+                const digitsOnly = phoneNumberInput.value.replace(/\D/g, '');
+                const dialCode = phoneCodeSelect?.value || '';
+                const fullNumber = `${dialCode}${digitsOnly}`;
+
+                let valid = digitsOnly.length >= 6 && digitsOnly.length <= 15;
+
+                if (window.libphonenumber?.parsePhoneNumberFromString && dialCode) {
+                    const parsed = window.libphonenumber.parsePhoneNumberFromString(fullNumber);
+                    valid = Boolean(parsed && parsed.isValid());
+                }
+
+                phoneNumberInput.setCustomValidity(valid ? '' : 'Enter a valid phone number.');
+                return valid;
+            };
+
+            populateLocationSelects().catch(() => {});
+
+            emailInput?.addEventListener('blur', async () => {
+                await validateEmailDomain();
+                emailInput.reportValidity();
+            });
+
+            phoneNumberInput?.addEventListener('input', validatePhoneNumber);
+            phoneCodeSelect?.addEventListener('change', validatePhoneNumber);
+
+            contactForm?.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const emailValid = await validateEmailDomain();
+                const phoneValid = validatePhoneNumber();
+
+                if (!contactForm.reportValidity() || !emailValid || !phoneValid) {
+                    return;
+                }
+
+                contactForm.reset();
+            });
+
+            const contactTitle = document.getElementById('contactTitle');
+            const contactSubmit = document.querySelector('.contact__submit');
+
+            const setContactGradientState = (isActive) => {
+                document.body.classList.toggle('contact-submit-hover', isActive);
+
+                if (!isActive || !contactTitle) {
+                    return;
+                }
+
+                document.body.style.setProperty('--contact-title-gradient-position', '0%');
+            };
+
+            contactSubmit?.addEventListener('mouseenter', () => setContactGradientState(true));
+            contactSubmit?.addEventListener('mouseleave', () => setContactGradientState(false));
+            contactSubmit?.addEventListener('focus', () => setContactGradientState(true));
+            contactSubmit?.addEventListener('blur', () => setContactGradientState(false));
+        </script>
+    </main>
+</body>
+</html>
