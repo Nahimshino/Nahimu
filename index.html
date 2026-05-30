@@ -501,6 +501,7 @@
                     </label>
 
                     <button class="contact__submit" type="submit">Submit</button>
+                    <p class="contact__form-status" aria-live="polite"></p>
                 </form>
             </div>
         </section>
@@ -548,6 +549,7 @@
             const phoneCodeSelect = contactForm?.querySelector('select[name="phoneCode"]');
             const emailInput = contactForm?.querySelector('input[name="email"]');
             const phoneNumberInput = contactForm?.querySelector('input[name="phoneNumber"]');
+            const contactFormStatus = contactForm?.querySelector('.contact__form-status');
             const emailjsServiceId = 'service_6ygsqml';
             const emailjsTemplateId = 'template_ap85w7g';
 
@@ -722,6 +724,16 @@
                 return valid;
             };
 
+            const setFormStatus = (message, isSuccess) => {
+                if (!contactFormStatus) {
+                    return;
+                }
+
+                contactFormStatus.textContent = message;
+                contactFormStatus.classList.toggle('contact__form-status--success', isSuccess);
+                contactFormStatus.classList.toggle('contact__form-status--error', !isSuccess);
+            };
+
             populateLocationSelects().catch(() => {});
 
             emailInput?.addEventListener('blur', async () => {
@@ -734,6 +746,7 @@
 
             contactForm?.addEventListener('submit', async (event) => {
                 event.preventDefault();
+                setFormStatus('', false);
 
                 const emailValid = await validateEmailDomain();
                 const phoneValid = validatePhoneNumber();
@@ -756,10 +769,10 @@
                     });
 
                     contactForm.reset();
-                    alert('Your message has been sent successfully.');
+                    setFormStatus('Your message has been sent successfully.', true);
                 } catch (error) {
                     console.error('EmailJS send failed', error);
-                    alert(`Unable to send your message right now. ${error?.text || error?.message || 'Please try again later.'}`);
+                    setFormStatus(`Unable to send your message right now. ${error?.text || error?.message || 'Please try again later.'}`, false);
                 }
             });
 
