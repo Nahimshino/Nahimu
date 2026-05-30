@@ -397,7 +397,7 @@
                 }
 
                 contactFormStatus.textContent = message;
-                contactFormStatus.classList.toggle('contact__form-status--success', isSuccess);
+                contactFormStatus.classList.toggle('contact__form-status--success', Boolean(isSuccess));
                 contactFormStatus.classList.toggle('contact__form-status--error', !isSuccess);
             };
 
