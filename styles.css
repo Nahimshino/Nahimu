@@ -95,6 +95,10 @@ body {
     scroll-behavior: smooth;
 }
 
+html {
+    scroll-padding-top: clamp(4rem, 8vw, 6rem);
+}
+
 body {
     margin: 0;
     min-height: 100vh;
@@ -368,13 +372,17 @@ body.nav-open .site-nav {
     align-items: center;
     padding: clamp(1.5rem, 3vw, 2.5rem) 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
+    scroll-margin-top: clamp(4rem, 8vw, 6rem);
 }
 
 .work-piece--featured {
     grid-template-columns: 1fr;
     gap: 1.75rem;
     border-top: 0;
-    padding-top: 0;
+    padding-top: clamp(1.5rem, 3vw, 2.5rem);
+    padding-bottom: clamp(2rem, 4vw, 3.5rem);
+    margin-bottom: 20px;
 }
 
 .work-piece--featured .work-piece__title {
@@ -869,6 +877,7 @@ body.gallery-open .subtitle {
     min-width: 0;
     perspective: 2200px;
     outline: none;
+    cursor: pointer;
 }
 
 .gallery-card:focus-visible {
@@ -1548,10 +1557,12 @@ body.contact-submit-hover .contact__illustration-image--color {
     background: #000000;
     color: #f5f5f5;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.3rem 1rem;
+    justify-content: center;
+    text-align: center;
+    gap: 0.9rem;
+    padding: 1.1rem 1rem;
     font-family: var(--font-body);
     font-size: 0.82rem;
 }
@@ -1680,6 +1691,33 @@ h3,
         --logo-height: calc(var(--logo-width) * 0.04);
     }
 
+    .site-header {
+        padding: 0.45rem 0.75rem;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(10px);
+    }
+
+    .site-header__toggle {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        position: relative;
+        z-index: 81;
+    }
+
+    .site-header__toggle-bars {
+        width: 1.55rem;
+        height: 1.05rem;
+    }
+
+    .site-header__toggle-bars span,
+    .site-nav__close span {
+        width: 1.55rem;
+        height: 3.25px;
+    }
+
     .page {
         padding-inline: 0;
     }
@@ -1689,25 +1727,91 @@ h3,
     }
 
     .gallery__mark-swap {
-        width: min(42vw, 180px);
+        width: min(18vw, 82px);
+        margin: 0;
+        transform: none;
+        justify-self: end;
+        align-self: center;
     }
 
     .gallery__intro {
+        grid-template-columns: auto auto;
+        align-items: center;
+        row-gap: 1rem;
+        column-gap: 0.1rem;
+        justify-content: center;
+        width: min(100%, 1220px);
         padding: clamp(0.8rem, 3vw, 1.25rem) 4vw clamp(1.5rem, 4vw, 2rem);
     }
 
     .gallery__title {
-        font-size: clamp(4rem, 16vw, 7rem);
+        display: flex;
+        width: auto;
+        justify-self: center;
+        align-items: flex-start;
+        text-align: center;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 0;
+        white-space: nowrap;
+        font-size: clamp(3rem, 10vw, 5rem);
+        line-height: 0.92;
+    }
+
+    .gallery__title-line {
+        display: inline;
+        width: auto;
+        padding-block: 0;
     }
 
     .gallery__title-line--bottom {
-        margin-top: clamp(0.35rem, 1vw, 0.6rem);
-        transform: translateX(0.04em);
+        margin-top: 0;
+        transform: none;
     }
 
     .gallery__tile--wide,
     .gallery__tile--square {
         grid-column: 1 / -1;
+    }
+
+    .gallery__grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: minmax(240px, auto);
+        column-gap: 20px;
+        row-gap: 20px;
+    }
+
+    .gallery-card,
+    .gallery-card--wide,
+    .gallery-card--square,
+    .gallery-card--1,
+    .gallery-card--2,
+    .gallery-card--3,
+    .gallery-card--4,
+    .gallery-card--5,
+    .gallery-card--6,
+    .gallery-card--7,
+    .gallery-card--8,
+    .gallery-card--9 {
+        grid-column: auto;
+        grid-row: auto;
+        height: auto;
+        aspect-ratio: 16 / 11;
+        margin-bottom: 20px;
+    }
+
+    .gallery-card__inner {
+        height: 100%;
+    }
+
+    .gallery-card__face--front {
+        background-position: center center;
+    }
+
+    .work-piece__hero-image,
+    .work-piece__gallery img {
+        height: clamp(160px, 58vw, 230px);
+        object-position: center center;
     }
 
     .contact {
@@ -1723,8 +1827,8 @@ h3,
     }
 
     .site-footer {
-        flex-direction: column;
-        align-items: flex-start;
+        gap: 0.9rem;
+        padding-block: 1.1rem;
     }
 
     .work__intro,
@@ -1733,7 +1837,7 @@ h3,
     }
 
     .work__title {
-        font-size: clamp(4.8rem, 18vw, 7rem);
+        font-size: clamp(3.2rem, 13vw, 5.2rem);
         line-height: 0.98;
     }
 
@@ -1747,14 +1851,36 @@ h3,
 
     .work-piece--featured {
         gap: 1rem;
+        padding-bottom: 2.5rem;
+        margin-bottom: 20px;
     }
 
     .work-piece__featured-top {
         grid-template-columns: 1fr;
     }
 
+    .work-piece--featured:nth-child(even) .work-piece__featured-top {
+        grid-template-columns: 1fr;
+    }
+
+    .work-piece--featured:nth-child(even) .work-piece__title {
+        justify-self: start;
+        text-align: left;
+    }
+
+    .work-piece--featured:nth-child(even) .work-piece__media--featured,
+    .work-piece--featured:nth-child(even) .work-piece__content--featured {
+        order: unset;
+        text-align: left;
+    }
+
     .work-piece__gallery {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .work-piece--featured:nth-child(even) .work-piece__gallery--featured {
+        direction: ltr;
     }
 
     .work-piece--reverse .work-piece__media,
@@ -1763,22 +1889,28 @@ h3,
     }
 
     .about-contact-page .about {
+        padding-top: clamp(5.5rem, 16vw, 8rem);
         padding-inline: 4vw;
     }
 
     .about-contact-page .about__intro,
     .about-contact-page .contact__intro {
+        padding-top: clamp(1rem, 4vw, 2rem);
         padding-bottom: 1.5rem;
     }
 
-    .about-contact-page .about__title,
-    .about-contact-page .contact__title {
+    .about-contact-page .about__title {
         font-size: clamp(4rem, 18vw, 7rem);
         line-height: 0.9;
     }
 
+    .about-contact-page .contact__title {
+        font-size: clamp(2.9rem, 11vw, 4.6rem);
+        line-height: 0.9;
+    }
+
     .about-contact-page .about__logo-swap {
-        width: min(44vw, 220px);
+        width: min(22vw, 110px);
     }
 
     .about-contact-page .about__content {
@@ -1787,6 +1919,18 @@ h3,
 
     .about-contact-page .about__photo {
         height: clamp(260px, 72vw, 420px);
+    }
+
+    .contact__illustration-image {
+        width: min(100%, 250px);
+    }
+
+    .contact__title {
+        font-size: clamp(2.9rem, 11vw, 4.6rem);
+        line-height: 0.9;
+        width: 100%;
+        text-align: center;
+        margin-inline: auto;
     }
 
     .about-contact-page .contact {
