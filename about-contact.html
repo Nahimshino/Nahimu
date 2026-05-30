@@ -424,7 +424,7 @@
                     contactForm.reset();
                 } catch (error) {
                     console.error('EmailJS send failed', error);
-                    alert('Unable to send your message right now. Please try again later.');
+                    alert(`Unable to send your message right now. ${error?.text || error?.message || 'Please try again later.'}`);
                 }
             });
         </script>
