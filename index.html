@@ -23,7 +23,6 @@
             <span class="site-nav__slash" aria-hidden="true">/</span>
             <a class="site-nav__link" href="#gallery">GALLERY</a>
             <span class="site-nav__slash" aria-hidden="true">/</span>
-            const contactEmail = 'nfhebueno80@gmail.com';
             <a class="site-nav__link" href="work.html">WORK</a>
             <span class="site-nav__slash" aria-hidden="true">/</span>
             <a class="site-nav__link" href="about-contact.html#about">ABOUT ME</a>
@@ -34,25 +33,6 @@
 
     <main class="page">
         <section class="hero" id="hero" aria-label="Nahimu portfolio cover">
-                const formData = new FormData(contactForm);
-                const name = String(formData.get('name') || '').trim();
-                const country = String(formData.get('country') || '').trim();
-                const email = String(formData.get('email') || '').trim();
-                const phoneCode = String(formData.get('phoneCode') || '').trim();
-                const phoneNumber = String(formData.get('phoneNumber') || '').trim();
-                const message = String(formData.get('message') || '').trim();
-
-                const subject = encodeURIComponent(`Portfolio contact from ${name || 'Website visitor'}`);
-                const bodyText = [
-                    `Name: ${name}`,
-                    `Country: ${country}`,
-                    `Email: ${email}`,
-                    `Phone: ${phoneCode} ${phoneNumber}`.trim(),
-                    '',
-                    message,
-                ].join('\n');
-
-                window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${encodeURIComponent(bodyText)}`;
             <div class="logo-stack" aria-label="Nahimu logo interaction">
                 <img class="logo logo-layer logo-top-4" src="img/nahimu_RED.svg" alt="Nahimu red top" />
                 <img class="logo logo-layer logo-top-3" src="img/nahimu_YELLOW.svg" alt="Nahimu yellow top" />
@@ -536,6 +516,7 @@
         </footer>
 
         <script src="https://unpkg.com/libphonenumber-js@1.11.10/bundle/libphonenumber-max.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
         <script>
             const contactForm = document.querySelector('.contact__form');
@@ -543,6 +524,10 @@
             const phoneCodeSelect = contactForm?.querySelector('select[name="phoneCode"]');
             const emailInput = contactForm?.querySelector('input[name="email"]');
             const phoneNumberInput = contactForm?.querySelector('input[name="phoneNumber"]');
+            const emailjsServiceId = 'service_6ygsqml';
+            const emailjsTemplateId = 'template_ap85w7g';
+
+            emailjs.init('xy63ham7GBjco2Bii');
 
             const flagEmoji = (regionCode) => {
                 if (!regionCode || regionCode.length !== 2) {
@@ -670,7 +655,23 @@
                     return;
                 }
 
-                contactForm.reset();
+                const formData = new FormData(contactForm);
+
+                try {
+                    await emailjs.send(emailjsServiceId, emailjsTemplateId, {
+                        from_name: String(formData.get('name') || '').trim(),
+                        reply_to: String(formData.get('email') || '').trim(),
+                        country: String(formData.get('country') || '').trim(),
+                        phone_code: String(formData.get('phoneCode') || '').trim(),
+                        phone_number: String(formData.get('phoneNumber') || '').trim(),
+                        message: String(formData.get('message') || '').trim(),
+                    });
+
+                    contactForm.reset();
+                } catch (error) {
+                    console.error('EmailJS send failed', error);
+                    alert('Unable to send your message right now. Please try again later.');
+                }
             });
 
             const contactTitle = document.getElementById('contactTitle');
