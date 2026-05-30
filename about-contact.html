@@ -112,7 +112,7 @@
                     <label class="contact__field contact__field--message">
                         <span class="contact__label">Message</span>
                         <span class="contact__hint">Tell me about your project!</span>
-                        <textarea name="message" rows="4"></textarea>
+                        <textarea name="message" rows="4" required></textarea>
                     </label>
 
                     <button class="contact__submit" type="submit">Submit</button>
@@ -423,6 +423,7 @@
                     });
 
                     contactForm.reset();
+                    alert('Your message has been sent successfully.');
                 } catch (error) {
                     console.error('EmailJS send failed', error);
                     alert(`Unable to send your message right now. ${error?.text || error?.message || 'Please try again later.'}`);
