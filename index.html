@@ -746,12 +746,13 @@
 
                 try {
                     await emailjs.send(emailjsServiceId, emailjsTemplateId, {
-                        from_name: String(formData.get('name') || '').trim(),
-                        reply_to: String(formData.get('email') || '').trim(),
+                        name: String(formData.get('name') || '').trim(),
+                        email: String(formData.get('email') || '').trim(),
+                        phoneCode: String(formData.get('phoneCode') || '').trim(),
+                        phoneNumber: String(formData.get('phoneNumber') || '').trim(),
                         country: String(formData.get('country') || '').trim(),
-                        phone_code: String(formData.get('phoneCode') || '').trim(),
-                        phone_number: String(formData.get('phoneNumber') || '').trim(),
                         message: String(formData.get('message') || '').trim(),
+                        time: new Date().toLocaleString('en-US'),
                     });
 
                     contactForm.reset();
